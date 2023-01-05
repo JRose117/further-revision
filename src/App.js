@@ -1,16 +1,17 @@
-import { useEffect } from 'react'
-import axios from 'axios'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import AllHP from './components/AllHP'
 
 const App = () => {
-  useEffect(() => {
-    const getData = async () => {
-      const { data } = await axios.get('/api/products/') // * <-- replace with your endpoint
-      console.log(data)
-    }
-    getData()
-  })
 
-  return <h1>Hello World</h1>
+  return (
+    <div className="site=wrapper">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element ={<AllHP/>}/>
+        </Routes>
+      </BrowserRouter>
+    </div>
+  )
 }
 
 export default App
