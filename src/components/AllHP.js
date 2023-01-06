@@ -1,14 +1,15 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Card from 'react-bootstrap/Card'
 
-const AllHP = () => {
+function AllHP() {
   const [errors, setErrors] = useState(false)
   const [chars, setChars] = useState([])
+  const [filteredChars, setFilteredChars] = useState([])
+  const [searchTerm, setSearchTerm] = useState('')
 
   useEffect(() => {
     const getCharData = async () => {
@@ -22,14 +23,25 @@ const AllHP = () => {
     }
     getCharData()
   }, [])
-  console.log(chars)
+
+  useEffect(() => {
+    setFilteredChars(
+      chars.filter(char => char.name.toLowerCase().startsWith(searchTerm.toLowerCase()))
+    )
+  }, [searchTerm, chars])
+
+  const handleSearch = event => {
+    setSearchTerm(event.target.value)
+  }
+
   return (
     <Container as="main" className='char-index text-center'>
       <h1 className='text-center mb-4'> Harry Potter </h1>
+      <div className='search'><input type="text" value={searchTerm} placeholder="Search for a Character" onChange={handleSearch} /></div>
       <Row>
-        {chars.length > 0
+        {filteredChars.length > 0
           ?
-          chars.map(char => {
+          filteredChars.map(char => {
             const { name, image } = char
             console.log(char)
             return (
